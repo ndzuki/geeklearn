@@ -2,21 +2,11 @@ package main
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 )
-
-// define QueryError struct as error interface
-type QueryError struct {
-	Query string
-	Err   error
-}
-
-// define Unwrap functionily return unwraped error
-func (e *QueryError) Unwrap() error { return e.Err }
 
 type production struct {
 	id    int
@@ -26,36 +16,32 @@ type production struct {
 
 func main() {
 	var product production
-	var qerr *QueryError
 
-	db, err := sql.Open("mysql", "root1:admin@tcp(localhost:3306)/test")
+	db, err := sql.Open("mysql", "root:admin@tcp(localhost:3306)/test")
 	if err != nil {
 		log.Fatal("Unable to Connect DB .", err)
 	}
-
 	defer db.Close()
+
 	results, err := db.Query("SELECT * FROM prod")
 	if err != nil {
-		if errors.Is(err, &qerr.Err) {
-			log.Fatal("Error when fetching prod table", qerr.Unwrap())
-		} else {
-			fmt.Println(err)
-		}
+		log.Fatal("Error when fetching prod table", err)
 	}
-
 	defer results.Close()
-	for results.Next() {
 
+	for results.Next() {
 		err = results.Scan(&product.id, &product.name, &product.price)
 		if err != nil {
-			log.Fatal("Unable to parse row:", err)
+			log.Fatal(err)
 		}
 		fmt.Printf("ID: %d\nName: %s\nPrice: %0.2f\n", product.id, product.name, product.price)
 	}
 
-	err = db.QueryRow("SELECT * FROM prod WHERE id = 3").Scan(&product.id, &product.name, &product.price)
+	id := 3
+	err = db.QueryRow("SELECT * FROM prod WHERE id = ?", id).Scan(&product.id, &product.name, &product.price)
 	if err != nil {
-		log.Fatal("Unable to parse row:", err)
+		// if errors.Is(err, errors.New("no rows in result set")) {
+		log.Fatalf("product `id=%d` not found.", id)
 	}
 	fmt.Printf("ID: %d\nName: %s\nPrice: %0.2f\n", product.id, product.name, product.price)
 }
