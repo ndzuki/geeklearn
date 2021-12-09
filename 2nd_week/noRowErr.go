@@ -37,11 +37,10 @@ func main() {
 		fmt.Printf("ID: %d\nName: %s\nPrice: %0.2f\n", product.id, product.name, product.price)
 	}
 
-	id := 3
-	err = db.QueryRow("SELECT * FROM prod WHERE id = ?", id).Scan(&product.id, &product.name, &product.price)
+	const name, id = "Laptop", 3
+	err = db.QueryRow("SELECT * FROM prod WHERE name = ? and id = ?", name, id).Scan(&product.id, &product.name, &product.price)
 	if err != nil {
-		// if errors.Is(err, errors.New("no rows in result set")) {
-		log.Fatalf("product `id=%d` not found.", id)
+		log.Fatalf("product %s (id=%d) not found.", name, id)
 	}
 	fmt.Printf("ID: %d\nName: %s\nPrice: %0.2f\n", product.id, product.name, product.price)
 }
