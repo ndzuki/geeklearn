@@ -8,14 +8,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type production struct {
-	id    int
-	name  string
-	price float64
-}
-
 func main() {
-	var product production
 
 	db, err := sql.Open("mysql", "root:admin@tcp(localhost:3306)/test")
 	if err != nil {
@@ -30,17 +23,21 @@ func main() {
 	defer results.Close()
 
 	for results.Next() {
-		err = results.Scan(&product.id, &product.name, &product.price)
+		var (
+			id    int
+			name  string
+			price float64
+		)
+		err = results.Scan(&id, &name, &price)
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("ID: %d\nName: %s\nPrice: %0.2f\n", product.id, product.name, product.price)
+		fmt.Printf("ID: %d\nName: %s\nPrice: %0.2f\n", id, name, price)
 	}
 
-	const name, id = "Laptop", 3
-	err = db.QueryRow("SELECT * FROM prod WHERE name = ? and id = ?", name, id).Scan(&product.id, &product.name, &product.price)
+	name, id := "Laptop", 3
+	err = db.QueryRow("SELECT * FROM prod WHERE name = ? and id = ?", name, id).Scan(&id, &name)
 	if err != nil {
-		log.Fatalf("product %s (id=%d) not found.", name, id)
+		log.Printf("product %s (id=%d) not found. \n%w", name, id, err)
 	}
-	fmt.Printf("ID: %d\nName: %s\nPrice: %0.2f\n", product.id, product.name, product.price)
 }
