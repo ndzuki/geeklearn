@@ -1,0 +1,33 @@
+syntax="proto3";
+
+message SearchRequest {
+	string query = 1;
+	int32 page_number = 2;
+	int32 result_per_page = 3;
+	repteated Result results = 4; //可以使用其它message类型作为字段类型
+	message Inner {
+		string name = 1;
+		string value = 2;
+		repeated string snippets = 3;
+	}
+	repeated Inner inner = 5; //可以使用其它message类型作为字段类型
+
+	//define enum type
+	enum Corpus {
+		UNIVERSAL = 0; //注意：每个enum定义的第一个元素值必须是0
+		WEB = 1;
+		IMAAGES = 2;
+		LOCAL = 3;
+		NEWS = 4;
+		PRODUCTS = 5;
+		VIDEO = 6;
+	}
+	Corpus corpus = 4; //use Corpus as field type
+}
+
+message Result {
+	string url = 1;
+	string title = 2;
+	repeated string snippets =3;
+}
+
