@@ -7,7 +7,7 @@ import (
 
 type String string
 
-func (d String) len() int {
+func (d String) Len() int {
 	return len(d)
 }
 
