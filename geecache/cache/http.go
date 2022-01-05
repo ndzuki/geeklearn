@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const defaultBasePath = "/_cache/"
+const defaultBasePath = "/_geecache/"
 
 // HTTPPool implements PeerPicker for a pool of HTTP peers.
 type HTTPPool struct {
