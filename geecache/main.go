@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	geecache "github.com/NDzuki/geeklearn/geecache/cache"
+	geecache "cache"
 )
 
 var db = map[string]string{

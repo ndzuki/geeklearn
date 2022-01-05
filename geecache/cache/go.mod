@@ -1,7 +1,7 @@
-module github.com/NDzuki/geeklearn/geecache/cache
+module cache
 
 go 1.17
 
-replace github.com/NDzuki/geeklearn/geecache/lru => ../lru
+replace lru => ../lru
 
-require github.com/NDzuki/geeklearn/geecache/lru v0.0.0-00010101000000-000000000000
+require lru v0.0.0-00010101000000-000000000000
