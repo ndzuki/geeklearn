@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package geecachepb;
+option go_package = "./"; // 指定生成的pb文件输出路径，指定'./'目录则在当前工作目录生成
+
+message Request {
+    string group = 1;
+    string key = 2;
+}
+
+message Response {
+    bytes value = 1;
+}
+
+service GroupCache {
+    rpc Get(Request) returns (Response);
+}
