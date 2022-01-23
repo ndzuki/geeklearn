@@ -2,6 +2,17 @@ module geecache
 
 go 1.17
 
-replace github.com/NDzuki/geeklearn/geecache/lru => ./lru
+replace cache => ./cache
 
-require github.com/NDzuki/geeklearn/geecache/lru v0.0.0-00010101000000-000000000000
+replace lru => ./lru
+
+require cache v0.0.0-00010101000000-000000000000
+
+require (
+	consistenthash v0.0.0-00010101000000-000000000000 // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
+	google.golang.org/protobuf v1.27.1 // indirect
+	lru v0.0.0-00010101000000-000000000000 // indirect
+)
+
+replace consistenthash => ./consistenthash

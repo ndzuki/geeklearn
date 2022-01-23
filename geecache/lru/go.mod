@@ -1,3 +1,3 @@
-module github.com/NDzuki/geeklearn/geecache/lru
+module lru
 
 go 1.17
