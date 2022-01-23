@@ -1,0 +1,11 @@
+version: '3'
+services:
+  redis:
+    image: redis:6.0
+    container_name: redis
+    tty: true
+    ports:
+      - 6379:6379
+    volumes:
+      - /home/nd/go/github.com/NDzuki/geeklearn/8th_week/redis/benchmark_test.sh:/tmp/benchmark_test.sh
+    # command: /bin/sh /tmp/benchmark_test.sh
