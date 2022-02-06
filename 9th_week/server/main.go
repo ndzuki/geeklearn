@@ -7,6 +7,26 @@ import (
 	"protocol"
 )
 
+func main() {
+	lis, err := net.Listen("tcp", "0.0.0.0:9000")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	for {
+		conn, err := lis.Accept()
+		defer conn.Close()
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		// go server_tcp_fix_length(conn)
+		// go server_tcp_delimiter(conn)
+		go server_tcp_frame_decoder(conn)
+	}
+}
+
 // server fix length
 func server_tcp_fix_length(conn net.Conn) {
 	fmt.Println("server, fix length")
@@ -57,24 +77,5 @@ func server_tcp_frame_decoder(conn net.Conn) {
 			return
 		}
 		protocol.Unpack(append(buf, buffer[:n]...), readerChannel)
-	}
-}
-func main() {
-	lis, err := net.Listen("tcp", "0.0.0.0:9000")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	for {
-		conn, err := lis.Accept()
-		defer conn.Close()
-
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		go server_tcp_delimiter(conn)
-		// go server_tcp_fix_length(conn)
-		// go server_tcp_frame_decoder(conn)
 	}
 }

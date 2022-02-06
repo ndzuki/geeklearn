@@ -13,9 +13,9 @@ func main() {
 		return
 	}
 	defer conn.Close()
-	client_tcp_fix_length(conn)
-	// client_tcp_frame_decoder(conn)
+	// client_tcp_fix_length(conn)
 	// client_tcp_delimiter(conn)
+	client_tcp_frame_decoder(conn)
 }
 
 // client fix length
